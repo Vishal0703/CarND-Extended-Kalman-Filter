@@ -1,122 +1,46 @@
-# CarND-Extended-Kalman-Filter
-
+# Extended Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
 
-The goal of this project is to build an Extended Kalman Filter using C++ and
-use it to estimate the state of a moving object of interest with noisy LIDAR
-and RADAR measurements.
+In this project you will utilize a kalman filter to estimate the state of a moving object of interest with noisy lidar and radar measurements. Passing the project requires obtaining RMSE values that are lower than the tolerance outlined in the project rubric. 
 
-The measurements data is provided in the form of a [simulator](https://github.com/udacity/self-driving-car-sim/releases).
+This project involves the Term 2 Simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases)
 
-The key metrics are [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) values for both position and velocity of the tracked
-object.
+This repository includes two files that can be used to set up and install [uWebSocketIO](https://github.com/uWebSockets/uWebSockets) for either Linux or Mac systems. For windows you can use either Docker, VMware, or even [Windows 10 Bash on Ubuntu](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/) to install uWebSocketIO. Please see the uWebSocketIO Starter Guide page in the classroom within the EKF Project lesson for the required version and installation scripts.
 
-## Results
+Once the install for uWebSocketIO is complete, the main program can be built and run by doing the following from the project top directory.
 
-The success metrics for this project are the RMSE values for 2 datasets.
+1. mkdir build
+2. cd build
+3. cmake ..
+4. make
+5. ./ExtendedKF
 
-The values shoule be below:
-- `0.11` for `P x` and `P y`.
-- `0.52` for `V x` and `V y`.
+Tips for setting up your environment can be found in the classroom lesson for this project.
 
-### RMSE values
+Note that the programs that need to be written to accomplish the project are src/FusionEKF.cpp, src/FusionEKF.h, kalman_filter.cpp, kalman_filter.h, tools.cpp, and tools.h
 
-The folowing table lists the results of both datasets:
+The program main.cpp has already been filled out, but feel free to modify it.
 
-| RMSE | Dataset 1 | Dataset 2 |
-|------|-----------|-----------|
-| P x  |  0.1405   |  0.0732   |
-| P y  |  0.6668   |  0.0963   |
-| V x  |  0.6050   |  0.3813   |
-| V y  |  1.6355   |  0.4782   |
+Here is the main protocol that main.cpp uses for uWebSocketIO in communicating with the simulator.
 
-This is somehow unexpected as the dataset 1 should be the "easy" one to which every
-implementation should be able to get results below the desired marks, and dataset 2
-should be the "hard" one, showcasing a more precise implementation.
 
-It is unclear at the moment why this is the case.
+INPUT: values provided by the simulator to the c++ program
 
-#### Using only one senor
+["sensor_measurement"] => the measurement that the simulator observed (either lidar or radar)
 
-For both datasets a run with only one sensor, `radar` or `lidar` was also measured. 
 
-> You can test this yourself by setting the vars `use_laser_` and `use_radar_` in `src/FusionEKF.cpp`.
+OUTPUT: values provided by the c++ program to the simulator
 
-Here are the results:
-
-##### Dataset 1
-
-| RMSE | only RADAR | only LIDAR |
-|------|-----------|-----------|
-| P x  |  11.5299   |  0.1473   |
-| P y  |  7.9951   |  0.1152   |
-| V x  |  9.9502   |  0.6781   |
-| V y  |  8.8659   |  0.5324   |
-
-Interesting points here:
-- It behaves better with only `Lidar` than with both sensors, indicating tha the `Radar` measurements hurt more then help the prediction.
-- The issues with `Radar` measurements appear more prevalent to be on the `y` axis. Unclear why this is the case at this moment.
-
-##### Dataset 2
-
-| RMSE | only RADAR | only LIDAR |
-|------|-----------|-----------|
-| P x  |  0.2706   |  0.1167   |
-| P y  |  0.3869   |  0.1256   |
-| V x  |  0.6780   |  0.5929   |
-| V y  |  0.9585   |  0.5774   |
-
-A few points of interest:
-- This time it behaves slightly worse with only `Lidar` data then with both.
-- Again it behaves better with only `Lidar` then with only `Radar` data. 
-- The discrepancy between axis `x` and `y` is not so apparent if present at all. 
-
-### Images from the simulator
-
-> With both `Radar` and `Lidar` data.
-
-#### Dataset 1
-
-![alt text](results/EKF-dataset-1.png "Dataset 1")
-
-#### Dataset 2
-
-![alt text](results/EKF-dataset-2.png "Dataset 2")
-
-## Implementation
-
-The code skeleton for this project was provided by udacity on [this repo](https://github.com/udacity/CarND-Extended-Kalman-Filter-Project).
-
-The main program in under the `src` directory.
-```
-.
-├── FusionEKF.cpp
-├── FusionEKF.h
-├── json.hpp
-├── kalman_filter.cpp
-├── kalman_filter.h
-├── main.cpp
-├── measurement_package.h
-├── tools.cpp
-└── tools.h
-```
-
-The main changes were to the folowing files:
-
-- `main.cpp` - reads in data, runs the Kalman filter and calculates RMSE values after each measurement.
-- `FusionEKF.cpp` - initializes the filter, calls the `Predict` function and the `Update` function
-- `kalman_filter.cpp`- implementation of the `Predict` and `Update` function, for both `lidar` and `radar`.
-- `tools.cpp` - tool functions to calculate `RMSE` and the `Jacobian` matrix, used to convert polar to cartesian coordinates
-
-### Unit tests
-
-The code is not tested at the moment, this is somthing I want to add in the future using [Google's gTest](https://github.com/google/googletest) framework.
+["estimate_x"] <= kalman filter estimated position x
+["estimate_y"] <= kalman filter estimated position y
+["rmse_x"]
+["rmse_y"]
+["rmse_vx"]
+["rmse_vy"]
 
 ---
 
-# Contributing
-
-## Dependencies
+## Other Important Dependencies
 
 * cmake >= 3.5
   * All OSes: [click here for installation instructions](https://cmake.org/install/)
@@ -129,7 +53,7 @@ The code is not tested at the moment, this is somthing I want to add in the futu
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
   * Windows: recommend using [MinGW](http://www.mingw.org/)
 
-## Build
+## Basic Build Instructions
 
 1. Clone this repo.
 2. Make a build directory: `mkdir build && cd build`
@@ -149,3 +73,39 @@ using the following settings:
 ## Code Style
 
 Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
+
+## Generating Additional Data
+
+This is optional!
+
+If you'd like to generate your own radar and lidar data, see the
+[utilities repo](https://github.com/udacity/CarND-Mercedes-SF-Utilities) for
+Matlab scripts that can generate additional data.
+
+## Project Instructions and Rubric
+
+Note: regardless of the changes you make, your project must be buildable using
+cmake and make!
+
+More information is only accessible by people who are already enrolled in Term 2
+of CarND. If you are enrolled, see [the project resources page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/382ebfd6-1d55-4487-84a5-b6a5a4ba1e47)
+for instructions and the project rubric.
+
+
+
+## Results
+
+The ideal values for Dataset 1 shoule be:
+- P x and P y - 0.11.
+- V x and V y - 0.52.
+
+The values observed :
+
+| RMSE | Dataset 1 |
+|------|-----------|
+| P x  |  0.1359   |  
+| P y  |  0.1764   |
+| V x  |  0.5047   | 
+| V y  |  0.6150   |  
+
+
