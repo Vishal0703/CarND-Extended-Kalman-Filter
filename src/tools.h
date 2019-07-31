@@ -13,6 +13,7 @@ public:
   * Constructor.
   */
   Tools();
+  Tools(const Tools &);
 
   /**
   * Destructor.
@@ -28,6 +29,11 @@ public:
   * A helper method to calculate Jacobians.
   */
   MatrixXd CalculateJacobian(const VectorXd& x_state);
+
+  /**
+   * Convert from Cartesian to Polar coordinates.
+   */
+  VectorXd ConvertFromCartesianToPolarCoords(const VectorXd &v_cart);
 
 };
 

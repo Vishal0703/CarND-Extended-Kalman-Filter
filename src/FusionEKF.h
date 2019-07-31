@@ -31,12 +31,6 @@ public:
   */
   KalmanFilter ekf_;
 
-  ///* if this is false, laser measurements will be ignored (except for init)
-  bool use_laser_;
-
-  ///* if this is false, radar measurements will be ignored (except for init)
-  bool use_radar_;
-
 private:
   // check whether the tracking toolbox was initialized or not (first measurement)
   bool is_initialized_;
@@ -49,7 +43,10 @@ private:
   Eigen::MatrixXd R_laser_;
   Eigen::MatrixXd R_radar_;
   Eigen::MatrixXd H_laser_;
-  Eigen::MatrixXd Hj_;
+
+  // noises
+  double noise_ax_;
+  double noise_ay_;
 };
 
 #endif /* FusionEKF_H_ */
