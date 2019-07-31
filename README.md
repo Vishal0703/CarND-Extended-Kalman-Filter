@@ -96,16 +96,16 @@ for instructions and the project rubric.
 ## Results
 
 The ideal values for Dataset 1 shoule be:
-- P x and P y - 0.11.
-- V x and V y - 0.52.
+- P x and P y <= 0.11.
+- V x and V y <= 0.52.
 
 The values observed :
 
 | RMSE | Dataset 1 |
 |------|-----------|
-| P x  |  0.1510   |  
-| P y  |  0.6762   |
-| V x  |  0.7599   | 
-| V y  |  1.7238   |  
+| P x  |  0.0973   |  
+| P y  |  0.0855   |
+| V x  |  0.4513   | 
+| V y  |  0.4399   |  
 
 
